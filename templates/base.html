@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Procurement Control{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="{{ url_for('index') }}">
+            <span class="brand-mark">PC</span>
+            <span>
+                <strong>Procurement Control</strong>
+                <small>Engineering Materials</small>
+            </span>
+        </a>
+        <nav class="nav">
+            <a href="{{ url_for('index') }}">Dashboard</a>
+            <a href="{{ url_for('new_item') }}">New Request</a>
+            {% if is_manager %}
+                <a href="{{ url_for('audit') }}">Audit Log</a>
+                <a href="{{ url_for('users') }}">Users</a>
+                <a href="{{ url_for('settings') }}">Settings</a>
+            {% endif %}
+        </nav>
+        <div class="mode-panel">
+            <span class="role-badge {{ current_role }}">{{ current_role|upper }}</span>
+            {% if is_manager %}
+                <form action="{{ url_for('logout') }}" method="post">
+                    <button class="ghost-button" type="submit">Exit Manager</button>
+                </form>
+            {% else %}
+                <a class="primary-button compact" href="{{ url_for('login') }}">Manager Login</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="page">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-stack">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

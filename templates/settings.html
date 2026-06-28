@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Settings - Procurement Control{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Data protection</p>
+        <h1>Settings and backups</h1>
+    </div>
+    <form method="post">
+        <button class="primary-button" type="submit">Create Manual Backup</button>
+    </form>
+</section>
+
+<section class="settings-grid">
+    <div class="detail-panel">
+        <h2>Backup policy</h2>
+        <p class="plain-text">The application creates one automatic database backup per day when it is opened. Manual backups are available here and every backup is recorded in the audit log.</p>
+        <dl class="details compact-details">
+            <div><dt>Database</dt><dd>data/procurement.sqlite3</dd></div>
+            <div><dt>Backup folder</dt><dd>{{ backup_dir }}</dd></div>
+        </dl>
+    </div>
+
+    <section class="table-shell">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>File</th>
+                    <th>Reason</th>
+                    <th>Actor</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for backup in backups %}
+                    <tr>
+                        <td><strong>{{ backup.filename }}</strong></td>
+                        <td>{{ backup.reason }}</td>
+                        <td>{{ backup.actor }}</td>
+                        <td>{{ backup.created_at }}</td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="4" class="empty">No backups recorded yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</section>
+{% endblock %}

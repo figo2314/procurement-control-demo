@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Users - Procurement Control{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Access control</p>
+        <h1>Manager users</h1>
+    </div>
+</section>
+
+<section class="split-layout">
+    <form class="form-panel slim" method="post">
+        <h2>Add user</h2>
+        <label>Username
+            <input name="username" required>
+        </label>
+        <label>Password
+            <input name="password" type="password" required>
+        </label>
+        <label>Role
+            <select name="role">
+                <option value="manager">Manager</option>
+            </select>
+        </label>
+        <button class="primary-button" type="submit">Create User</button>
+    </form>
+
+    <section class="table-shell grow">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td><strong>{{ user.username }}</strong></td>
+                        <td>{{ user.role }}</td>
+                        <td>{{ "Active" if user.active else "Disabled" }}</td>
+                        <td>{{ user.created_at }}</td>
+                        <td>
+                            <form action="{{ url_for('toggle_user', user_id=user.id) }}" method="post">
+                                <button class="secondary-button compact" type="submit">{{ "Disable" if user.active else "Enable" }}</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</section>
+{% endblock %}
