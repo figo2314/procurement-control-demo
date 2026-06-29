@@ -37,6 +37,9 @@
         <label>Requester
             <input name="requester" value="{{ item.requester if item else '' }}" placeholder="Person who placed the request">
         </label>
+        <label>Request Date
+            <input type="date" name="request_date" value="{{ item.request_date if item else '' }}">
+        </label>
         <label>Department
             <input name="department" value="{{ item.department if item else '' }}" placeholder="Engineering, Maintenance, EHS">
         </label>

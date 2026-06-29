@@ -16,7 +16,7 @@
         <strong>{{ stats.received }}</strong>
     </div>
     <div class="stat risk">
-        <span>Late vs ETA</span>
+        <span>Late Arrival</span>
         <strong>{{ stats.delayed }}</strong>
     </div>
     <div class="stat">
@@ -54,10 +54,9 @@
                 <th>Qty</th>
                 {% if is_manager %}<th>Price</th>{% endif %}
                 <th>Requester</th>
-                <th>Purchase Date</th>
                 <th>PR Created</th>
                 <th>PO Created</th>
-                <th>ETA</th>
+                <th>Purchase Date</th>
                 <th>Received</th>
                 <th>Status</th>
             </tr>
@@ -74,11 +73,13 @@
                     {% if is_manager %}
                         <td>{{ item.currency or "" }} {{ "%.2f"|format(item.price or 0) }}</td>
                     {% endif %}
-                    <td>{{ item.requester or "-" }}</td>
-                    <td>{{ item.purchase_date or "-" }}</td>
+                    <td>
+                        <span class="item-title">{{ item.requester or "-" }}</span>
+                        <small>Request Date: {{ item.request_date or "-" }}</small>
+                    </td>
                     <td>{{ item.pr_created_at or "-" }}</td>
                     <td>{{ item.po_created_at or "-" }}</td>
-                    <td>{{ item.expected_arrival_date or "-" }}</td>
+                    <td>{{ item.purchase_date or "-" }}</td>
                     <td>
                         {% if item.received %}
                             <span class="pill ok">Yes</span>

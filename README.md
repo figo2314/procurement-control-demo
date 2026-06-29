@@ -8,7 +8,7 @@ A compact Flask + SQLite procurement tracker for engineering material visibility
 - Manager login reveals commercial data and unlocks edit, delete, audit, users, settings, and backups.
 - Viewer can create procurement requests, but cannot see or enter prices.
 - MMS No. accepts numbers only, quantity is stored as an integer, and currency supports MOP, HKD, USD, and CNY.
-- List dashboard with MMS No., item, quantity, requester, PR/PO dates, purchase date, ETA, received status, and operational statistics.
+- List dashboard with MMS No., item, quantity, requester, request date, PR/PO dates, purchase date, received status, arrival risk, and operational statistics.
 - Per-item timeline with generated milestones and manager-added events.
 - Audit log for login, failed login, logout, create, update, delete, user changes, timeline events, and backups.
 - One automatic database backup per day, plus manual backups from Settings.

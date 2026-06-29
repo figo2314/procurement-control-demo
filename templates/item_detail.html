@@ -27,6 +27,7 @@
                 <div><dt>Price</dt><dd>{{ item.currency or "" }} {{ "%.2f"|format(item.price or 0) }}</dd></div>
             {% endif %}
             <div><dt>Requester</dt><dd>{{ item.requester or "-" }}</dd></div>
+            <div><dt>Request Date</dt><dd>{{ item.request_date or "-" }}</dd></div>
             <div><dt>Department</dt><dd>{{ item.department or "-" }}</dd></div>
             <div><dt>Supplier</dt><dd>{{ item.supplier or "-" }}</dd></div>
             <div><dt>Status</dt><dd><span class="status status-{{ item.status|lower|replace(' ', '-') }}">{{ item.status }}</span></dd></div>

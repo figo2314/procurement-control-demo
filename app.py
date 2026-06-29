@@ -30,6 +30,7 @@ APP_FIELDS = [
     "price",
     "currency",
     "requester",
+    "request_date",
     "supplier",
     "department",
     "purchase_date",
@@ -115,6 +116,7 @@ def init_db():
             price REAL,
             currency TEXT DEFAULT 'MOP',
             requester TEXT,
+            request_date TEXT,
             supplier TEXT,
             department TEXT,
             purchase_date TEXT,
@@ -171,6 +173,7 @@ def init_db():
         """
     )
     db.commit()
+    ensure_column("procurement_items", "request_date", "TEXT")
     migrate_existing_data()
 
     admin = db.execute("SELECT id FROM users WHERE username = ?", ("admin",)).fetchone()
@@ -307,6 +310,14 @@ def numeric_value(name):
         return None
 
 
+def ensure_column(table, column, definition):
+    db = get_db()
+    columns = [row["name"] for row in db.execute(f"PRAGMA table_info({table})").fetchall()]
+    if column not in columns:
+        db.execute(f"ALTER TABLE {table} ADD COLUMN {column} {definition}")
+        db.commit()
+
+
 def integer_value(name):
     value = form_value(name)
     if value is None:
@@ -334,6 +345,7 @@ def item_from_form(existing=None):
         "quantity": integer_value("quantity"),
         "currency": form_value("currency", "MOP"),
         "requester": form_value("requester"),
+        "request_date": form_value("request_date"),
         "supplier": form_value("supplier"),
         "department": form_value("department"),
         "purchase_date": form_value("purchase_date"),
@@ -360,7 +372,7 @@ def merge_item_for_form(existing, data):
 
 def migrate_existing_data():
     db = get_db()
-    rows = db.execute("SELECT id, mms_no, currency, quantity FROM procurement_items").fetchall()
+    rows = db.execute("SELECT id, mms_no, currency, quantity, request_date, pr_created_at, created_at FROM procurement_items").fetchall()
     for row in rows:
         updates = {}
         if row["currency"] in (None, "", "THB"):
@@ -369,6 +381,8 @@ def migrate_existing_data():
             updates["mms_no"] = "".join(ch for ch in row["mms_no"] if ch.isdigit())
         if row["quantity"] is not None:
             updates["quantity"] = int(row["quantity"])
+        if not row["request_date"]:
+            updates["request_date"] = row["pr_created_at"] or row["created_at"][:10]
         if updates:
             assignments = ", ".join(f"{field} = ?" for field in updates)
             db.execute(
@@ -459,6 +473,7 @@ def seed_demo_data():
             "price": 62400,
             "currency": "MOP",
             "requester": "Narin",
+            "request_date": "2026-06-12",
             "supplier": "Thai Industrial Supply",
             "department": "Engineering",
             "purchase_date": "2026-06-18",
@@ -477,6 +492,7 @@ def seed_demo_data():
             "price": 91500,
             "currency": "MOP",
             "requester": "Somchai",
+            "request_date": "2026-06-01",
             "supplier": "Automation Partner Co.",
             "department": "Maintenance",
             "purchase_date": "2026-06-08",
@@ -495,6 +511,7 @@ def seed_demo_data():
             "price": 43800,
             "currency": "MOP",
             "requester": "Maya",
+            "request_date": "2026-06-18",
             "supplier": "Pending sourcing",
             "department": "EHS",
             "purchase_date": "",
