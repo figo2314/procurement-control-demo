@@ -52,7 +52,7 @@ admin / admin123
 - MMS No. accepts numbers only.
 - Quantity is stored as an integer.
 - Currency supports MOP, HKD, USD, and CNY.
-- Engineering follow-up list includes MMS No., item, quantity, price for managers, priority, requester, request date, owner, PR date, PO date, purchase date, received status, and status.
+- Engineering follow-up list includes MMS No., item, quantity, price for managers, priority, requester, request date, owner, PR No./date, PO No./date, purchase date, received status, and status.
 - Clickable dashboard status cards for pending arrival, received, late arrival, and open PR.
 - Per-item timeline and audit log.
 - One automatic backup per day plus manual backups from Settings.
