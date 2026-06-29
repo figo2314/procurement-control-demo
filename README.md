@@ -1,22 +1,19 @@
 # Procurement Control Demo
 
-A compact Flask + SQLite procurement tracker for engineering material visibility.
+A compact single-file Flask procurement tracker for Windows server deployment.
 
-## Features
+## Files
 
-- Viewer mode works without a password.
-- Manager login reveals commercial data and unlocks edit, delete, audit, users, settings, and backups.
-- Viewer can create procurement requests, but cannot see or enter prices.
-- MMS No. accepts numbers only, quantity is stored as an integer, and currency supports MOP, HKD, USD, and CNY.
-- List dashboard with MMS No., item, quantity, requester, request date, PR/PO dates, purchase date, received status, arrival risk, and operational statistics.
-- Per-item timeline with generated milestones and manager-added events.
-- Audit log for login, failed login, logout, create, update, delete, user changes, timeline events, and backups.
-- One automatic database backup per day, plus manual backups from Settings.
+- `app.py`: application, pages, styles, and database logic.
+- `config.ini`: host, port, and debug settings.
+- `requirements.txt`: Python dependency list.
+- `data/procurement.sqlite3`: demo SQLite database.
+- `backups/`: automatic and manual database backups, ignored by Git.
 
-## Run
+## Run On Windows
 
 ```powershell
-cd "E:\Users\Figo\Documents\Thailand Travelling\procurement_demo"
+cd C:\path\to\procurement-control-demo
 py -m pip install -r requirements.txt
 py app.py
 ```
@@ -24,8 +21,23 @@ py app.py
 Open:
 
 ```text
-http://127.0.0.1:5000
+http://SERVER_IP:5000
 ```
+
+Change the port in `config.ini`:
+
+```ini
+[server]
+host = 0.0.0.0
+port = 5000
+debug = false
+```
+
+For Windows Task Scheduler, set:
+
+- Program: `py`
+- Arguments: `app.py`
+- Start in: the project folder path
 
 Default manager account:
 
@@ -33,11 +45,14 @@ Default manager account:
 admin / admin123
 ```
 
-## Data
+## Features
 
-- Database: `data/procurement.sqlite3`
-- Backups: `backups/`
-
-The repository includes a demo SQLite database so the app can be tested immediately after cloning.
-
-This is a local demo. Before using it in production, change the secret key, remove the default password, and run behind a real WSGI server with HTTPS.
+- Viewer mode works without a password.
+- Manager mode reveals price and unlocks edit, delete, users, audit log, settings, and backups.
+- MMS No. accepts numbers only.
+- Quantity is stored as an integer.
+- Currency supports MOP, HKD, USD, and CNY.
+- Engineering follow-up list includes MMS No., item, quantity, price for managers, priority, requester, request date, owner, PR date, PO date, purchase date, received status, and status.
+- Clickable dashboard status cards for pending arrival, received, late arrival, and open PR.
+- Per-item timeline and audit log.
+- One automatic backup per day plus manual backups from Settings.
